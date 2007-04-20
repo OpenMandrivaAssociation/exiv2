@@ -4,7 +4,7 @@
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
-Version:	0.13
+Version:	0.14
 Release:	%mkrel 1
 License:	GPL
 Group:		Graphics
@@ -136,6 +136,9 @@ rm -rf $RPM_BUILD_DIR/exiv2-%{version}
 #LDFLAGS="$LDFLAGS -module"
 %configure --enable-shared
 %make
+cd po
+make update-po
+cd ..
 
 
 
@@ -147,14 +150,10 @@ rm -rf $RPM_BUILD_ROOT
 #makeinstall
 %make DESTDIR=%{buildroot} install
 
-# Multiarch setup
-%multiarch_binaries %buildroot%{_bindir}/exiv2-config
-
-
 
 ##### PRE/POST INSTALL SCRIPTS #####
 
-%find_lang Exiv2
+%find_lang exiv2
 
 %post -n %{libname} -p /sbin/ldconfig
 
@@ -167,7 +166,7 @@ rm -rf $RPM_BUILD_ROOT
 ##### FILE LISTS FOR ALL BINARY PACKAGES #####
 
 ##### exiv2
-%files  -f Exiv2.lang
+%files  -f %{name}.lang
 %doc COPYING README
 %{_bindir}/exiv2
 %{_mandir}/man1/*
@@ -175,13 +174,11 @@ rm -rf $RPM_BUILD_ROOT
 ##### libexiv2
 %files -n %libname
 %defattr(-,root,root)
-%{_libdir}/lib%{name}-*.so
+%{_libdir}/lib%{name}.so.*
 
 ##### libexiv2-devel
 %files -n %{libname}-devel
 %defattr(-,root,root)
-%{_bindir}/*-config
-%multiarch %{_bindir}/multi*/*-config
 %{_libdir}/lib%{name}.so
 %{_libdir}/*.la
 %{_libdir}/*.a
@@ -190,5 +187,3 @@ rm -rf $RPM_BUILD_ROOT
 #doc doc
 
 ##### CHANGELOG #####
-
-
