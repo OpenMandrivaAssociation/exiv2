@@ -24,8 +24,7 @@ BuildRequires: doxygen graphviz python libxslt-proc
 
 %description
 
-Exiv2 is a command line utility to access image metadata. Exiv2 is
-free software.
+Exiv2 is a command line utility to access image metadata.
 
 The Exiv2 library provides
 
