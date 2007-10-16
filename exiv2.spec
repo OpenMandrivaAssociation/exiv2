@@ -5,7 +5,7 @@
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
 Version:	0.15
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPL
 Group:		Graphics
 Url:		http://www.exiv2.org/
@@ -139,6 +139,7 @@ rm -rf $RPM_BUILD_DIR/exiv2-%{version}
 cd po
 make update-po
 cd ..
+make doc
 
 
 
@@ -184,6 +185,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/*.a
 %{_libdir}/pkgconfig/*
 %{_includedir}/*
-#doc doc
+%doc doc/ChangeLog doc/cmd.txt doc/html doc/include doc/index.html doc/templates
+
 
 ##### CHANGELOG #####
