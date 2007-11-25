@@ -19,7 +19,11 @@ Source: http://www.exiv2.org/exiv2-%{version}-%pre.tar.gz
 
 #Provides:	libexiv
 BuildRoot: %{_tmppath}/%{name}-buildroot
-BuildRequires: doxygen graphviz python libxslt-proc
+BuildRequires: doxygen 
+BuildRequires: graphviz
+BuildRequires: python
+BuildRequires: libxslt-proc
+BuildRequires: expat-devel
 
 ##### SUB-PACKAGES #####
 
