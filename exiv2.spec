@@ -1,6 +1,6 @@
 ##### GENERAL STUFF #####
 
-%define libname %mklibname exiv 2
+%define libname %mklibname exiv2 2
 %define pre  pre1
 
 Summary:	Command line tool to access EXIF data in image files
