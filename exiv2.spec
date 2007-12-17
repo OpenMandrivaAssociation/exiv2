@@ -18,7 +18,6 @@ Source: http://www.exiv2.org/%name-%{version}-%pre.tar.gz
 ##### ADDITIONAL DEFINITIONS #####
 
 #Provides:	libexiv
-BuildRoot: %{_tmppath}/%{name}-buildroot
 BuildRequires: doxygen 
 BuildRequires: graphviz
 BuildRequires: python
