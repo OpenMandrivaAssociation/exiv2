@@ -1,19 +1,18 @@
 ##### GENERAL STUFF #####
 
 %define libname %mklibname exiv2_ 2
-%define pre  pre1
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
 Version:	0.16
-Release:	%mkrel 0.%pre.3
+Release:	%mkrel 1
 License:	GPL
 Group:		Graphics
 Url:		http://www.exiv2.org/
 
 ##### SOURCE FILES #####
 
-Source: http://www.exiv2.org/%name-%{version}-%pre.tar.gz
+Source: http://www.exiv2.org/%name-%{version}.tar.gz
 
 ##### ADDITIONAL DEFINITIONS #####
 
@@ -90,7 +89,7 @@ the "%{libname}" library.
 
 %prep
 rm -rf $RPM_BUILD_DIR/exiv2-%{version}
-%setup -q -n exiv2-%{version}-%pre
+%setup -q -n exiv2-%{version}
 
 
 
