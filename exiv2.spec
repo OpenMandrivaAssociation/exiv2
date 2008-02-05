@@ -5,7 +5,7 @@
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
 Version:	0.16
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPL
 Group:		Graphics
 Url:		http://www.exiv2.org/
@@ -48,7 +48,6 @@ Summary:	Library to access EXIF data in image files
 #Provides:	libexiv
 Group:		Graphics
 Obsoletes:  %{_lib}exiv22 < 0.16-1
-Obsoletes:  %{_lib}exiv2 < 0.16-1
  
 %description -n %libname
 libexiv2 is a C++ library to access image metadata. libexiv2 is free
