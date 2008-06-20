@@ -1,11 +1,12 @@
 ##### GENERAL STUFF #####
 
-%define libname %mklibname exiv2_ 2
+%define libname %mklibname exiv2_ 4
+%define libdev %mklibname exiv2 -d
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
-Version:	0.16
-Release:	%mkrel 4
+Version:	0.17
+Release:	%mkrel 1
 License:	GPL
 Group:		Graphics
 Url:		http://www.exiv2.org/
@@ -72,18 +73,26 @@ The Exiv2 library provides
       set from individual tags)
     * complete API documentation (by Doxygen)
 
-%package -n %{libname}-devel
+%package -n %{libdev}
 Summary: 	Headers and links to compile against the "%{libname}" library
 Requires: 	%{libname} = %{version}
 Requires:       multiarch-utils
 Provides:	libexiv-devel = %{version}
+Obsoletes: %{_lib}exiv2_2-devel
 BuildRequires:  zlib1-devel
 Group:		Development/C
 
-%description -n %{libname}-devel
+%description -n %{libdev}
 This package contains all files which one needs to compile programs using
 the "%{libname}" library.
 
+%package doc
+Summary: Exiv2 library documentation
+Group: Books/Computer books
+Conflicts: %{_lib}exiv2_2-devel
+
+%description doc
+Exiv2 library documentation.
 
 ##### PREP #####
 
@@ -148,13 +157,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/lib%{name}.so.*
 
 ##### libexiv2-devel
-%files -n %{libname}-devel
+%files -n %{libdev}
 %defattr(-,root,root)
 %{_libdir}/lib%{name}.so
 %{_libdir}/*.la
 %{_libdir}/*.a
 %{_libdir}/pkgconfig/*
 %{_includedir}/*
+
+%files doc
+%defattr(-,root,root)
 %doc doc/ChangeLog doc/cmd.txt doc/html doc/include doc/index.html doc/templates
 
 
