@@ -1,11 +1,12 @@
 ##### GENERAL STUFF #####
 
-%define libname %mklibname exiv2_ 4
+%define major 5
+%define libname %mklibname exiv2_ %major
 %define libdev %mklibname exiv2 -d
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
-Version:	0.17.1
+Version:	0.18
 Release:	%mkrel 1
 License:	GPL
 Group:		Graphics
@@ -97,10 +98,7 @@ Exiv2 library documentation.
 ##### PREP #####
 
 %prep
-rm -rf $RPM_BUILD_DIR/exiv2-%{version}
 %setup -q -n exiv2-%{version}
-
-
 
 ##### BUILD #####
 
@@ -109,23 +107,17 @@ rm -rf $RPM_BUILD_DIR/exiv2-%{version}
 #./autogen.sh
 
 #LDFLAGS="$LDFLAGS -module"
-%configure --enable-shared
+%configure2_5x --enable-shared
 %make
-cd po
-make update-po
-cd ..
-make doc
-
-
+%make update-po -C po
+%make doc
 
 ##### INSTALL #####
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-#makeinstall
-%make DESTDIR=%{buildroot} install
-
+%makeinstall_std
 
 ##### PRE/POST INSTALL SCRIPTS #####
 
@@ -154,7 +146,7 @@ rm -rf $RPM_BUILD_ROOT
 ##### libexiv2
 %files -n %libname
 %defattr(-,root,root)
-%{_libdir}/lib%{name}.so.*
+%{_libdir}/lib%{name}.so.%{major}*
 
 ##### libexiv2-devel
 %files -n %{libdev}
