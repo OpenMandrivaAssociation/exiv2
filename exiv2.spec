@@ -6,7 +6,7 @@
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
-Version:	0.18.1
+Version:	0.18.2
 Release:	%mkrel 1
 License:	GPL
 Group:		Graphics
