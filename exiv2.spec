@@ -1,12 +1,12 @@
 ##### GENERAL STUFF #####
 
-%define major 6
+%define major 9
 %define libname %mklibname exiv2_ %major
 %define libdev %mklibname exiv2 -d
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
-Version:	0.19
+Version:	0.20
 Release:	%mkrel 1
 License:	GPLv2+
 Group:		Graphics
