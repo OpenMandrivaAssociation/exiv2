@@ -7,7 +7,7 @@
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
 Version:	0.20
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
@@ -91,6 +91,7 @@ the "%{libname}" library.
 Summary: Exiv2 library documentation
 Group: Books/Computer books
 Conflicts: %{_lib}exiv2_2-devel
+BuildArch: noarch
 
 %description doc
 Exiv2 library documentation.
