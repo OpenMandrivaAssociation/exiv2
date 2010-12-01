@@ -25,6 +25,7 @@ BuildRequires: graphviz
 BuildRequires: python
 BuildRequires: libxslt-proc
 BuildRequires: expat-devel
+BuildRequires: zlib-devel
 
 ##### SUB-PACKAGES #####
 
@@ -80,7 +81,6 @@ Requires: 	%{libname} = %{version}
 Requires:       multiarch-utils
 Provides:	libexiv-devel = %{version}
 Obsoletes: %{_lib}exiv2_2-devel
-BuildRequires:  zlib1-devel
 Group:		Development/C
 
 %description -n %{libdev}
