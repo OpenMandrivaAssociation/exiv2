@@ -1,13 +1,13 @@
 ##### GENERAL STUFF #####
 
-%define major 10
-%define libname %mklibname exiv2_ %major
+%define major 11
+%define libname %mklibname exiv2_ %{major}
 %define libdev %mklibname exiv2 -d
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
-Version:	0.21.1
-Release:	%mkrel 2
+Version:	0.22
+Release:	%mkrel 1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
@@ -46,13 +46,13 @@ Exiv2 is a command line utility to access image metadata:
       Exif metadata
     * fix the Exif ISO setting of picture taken with Nikon cameras
 
-%package -n %libname
+%package -n %{libname}
 Summary:	Library to access EXIF data in image files
 #Provides:	libexiv
 Group:		Graphics
 Obsoletes:  %{_lib}exiv22 < 0.16-1
  
-%description -n %libname
+%description -n %{libname}
 libexiv2 is a C++ library to access image metadata. libexiv2 is free
 software.
 
@@ -116,7 +116,7 @@ Exiv2 library documentation.
 ##### INSTALL #####
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %makeinstall_std
 
@@ -133,7 +133,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 
 ##### FILE LISTS FOR ALL BINARY PACKAGES #####
