@@ -20,7 +20,7 @@ Source: http://www.exiv2.org/%name-%{version}.tar.gz
 
 #Provides:	libexiv
 BuildRoot: %{_tmppath}/%{name}-buildroot
-BuildRequires: doxygen 
+BuildRequires: doxygen
 BuildRequires: graphviz
 BuildRequires: python
 BuildRequires: libxslt-proc
@@ -116,8 +116,6 @@ Exiv2 library documentation.
 ##### INSTALL #####
 
 %install
-rm -rf %{buildroot}
-
 %makeinstall_std
 
 ##### PRE/POST INSTALL SCRIPTS #####
@@ -132,10 +130,6 @@ rm -rf %{buildroot}
 %postun -n %{libname} -p /sbin/ldconfig
 %endif
 
-%clean
-rm -rf %{buildroot}
-
-
 ##### FILE LISTS FOR ALL BINARY PACKAGES #####
 
 ##### exiv2
@@ -145,7 +139,7 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*
 
 ##### libexiv2
-%files -n %libname
+%files -n %{libname}
 %defattr(-,root,root)
 %{_libdir}/lib%{name}.so.%{major}*
 
