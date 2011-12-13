@@ -1,5 +1,3 @@
-##### GENERAL STUFF #####
-
 %define major 11
 %define libname %mklibname exiv2_ %{major}
 %define libdev %mklibname exiv2 -d
@@ -7,27 +5,19 @@
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
 Version:	0.22
-Release:	%mkrel 1
+Release:	22
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
-
-##### SOURCE FILES #####
-
 Source: http://www.exiv2.org/%name-%{version}.tar.gz
-
-##### ADDITIONAL DEFINITIONS #####
-
 #Provides:	libexiv
-BuildRoot: %{_tmppath}/%{name}-buildroot
+
 BuildRequires: doxygen
 BuildRequires: graphviz
 BuildRequires: python
-BuildRequires: libxslt-proc
+BuildRequires: xsltproc
 BuildRequires: expat-devel
 BuildRequires: zlib-devel
-
-##### SUB-PACKAGES #####
 
 %description
 Exiv2 is a command line utility to access image metadata:
@@ -48,7 +38,6 @@ Exiv2 is a command line utility to access image metadata:
 
 %package -n %{libname}
 Summary:	Library to access EXIF data in image files
-#Provides:	libexiv
 Group:		Graphics
 Obsoletes:  %{_lib}exiv22 < 0.16-1
  
@@ -77,11 +66,11 @@ The Exiv2 library provides
 
 %package -n %{libdev}
 Summary: 	Headers and links to compile against the "%{libname}" library
-Requires: 	%{libname} = %{version}
-Requires:       multiarch-utils
-Provides:	libexiv-devel = %{version}
-Obsoletes: %{_lib}exiv2_2-devel
 Group:		Development/C
+Requires: 	%{libname} = %{version}-%{release}
+Requires:	multiarch-utils
+Provides:	libexiv-devel = %{version}-%{release}
+Obsoletes:	%{_lib}exiv2_2-devel
 
 %description -n %{libdev}
 This package contains all files which one needs to compile programs using
@@ -90,71 +79,42 @@ the "%{libname}" library.
 %package doc
 Summary: Exiv2 library documentation
 Group: Books/Computer books
-Conflicts: %{_lib}exiv2_2-devel
-BuildArch: noarch
+Conflicts:	%{_lib}exiv2_2-devel
+BuildArch:	noarch
 
 %description doc
 Exiv2 library documentation.
 
-##### PREP #####
-
 %prep
-%setup -q -n exiv2-%{version}
-
-##### BUILD #####
+%setup -q
 
 %build
-# "autogen" is needed if we have a CVS/SVN snapshot.
-#./autogen.sh
-
 #LDFLAGS="$LDFLAGS -module"
-%configure2_5x --enable-shared
+%configure2_5x \
+	--disable-static \
+	--enable-shared
 %make
 %make update-po -C po
 %make doc
 
-##### INSTALL #####
-
 %install
 %makeinstall_std
-
-##### PRE/POST INSTALL SCRIPTS #####
-
+find %{buildroot} -type f -name "*.la" -exec rm -f {} ';'
 %find_lang exiv2
 
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
-
-##### FILE LISTS FOR ALL BINARY PACKAGES #####
-
-##### exiv2
 %files  -f %{name}.lang
 %doc COPYING README
 %{_bindir}/exiv2
 %{_mandir}/man1/*
 
-##### libexiv2
 %files -n %{libname}
-%defattr(-,root,root)
 %{_libdir}/lib%{name}.so.%{major}*
 
-##### libexiv2-devel
 %files -n %{libdev}
-%defattr(-,root,root)
 %{_libdir}/lib%{name}.so
-%{_libdir}/*.la
-%{_libdir}/*.a
 %{_libdir}/pkgconfig/*
 %{_includedir}/*
 
 %files doc
-%defattr(-,root,root)
 %doc doc/ChangeLog doc/cmd.txt doc/html doc/include doc/index.html doc/templates
 
-
-##### CHANGELOG #####
