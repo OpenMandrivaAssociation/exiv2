@@ -1,2 +1,4 @@
+removed_sources:
+  exiv2-0.22.tar.gz: 35211d853a986fe1b008fca14db090726e8dcce3
 sources:
-  "exiv2-0.22.tar.gz": 35211d853a986fe1b008fca14db090726e8dcce3
+  exiv2-0.23.tar.gz: 5f342bf642477526f41add11d6ee7787cdcd639f
