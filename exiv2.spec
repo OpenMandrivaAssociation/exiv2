@@ -1,5 +1,3 @@
-##### GENERAL STUFF #####
-
 %define major 12
 %define libname %mklibname exiv2_ %major
 %define libdev %mklibname exiv2 -d
@@ -7,26 +5,18 @@
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
 Version:	0.23
-Release:	23
+Release:	24
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
-
-##### SOURCE FILES #####
-
-Source: http://www.exiv2.org/%name-%{version}.tar.gz
-
-##### ADDITIONAL DEFINITIONS #####
-
+Source0:	http://www.exiv2.org/%name-%{version}.tar.gz
 #Provides:	libexiv
-BuildRequires: doxygen 
-BuildRequires: graphviz
-BuildRequires: python
-BuildRequires: libxslt-proc
-BuildRequires: expat-devel
-BuildRequires: zlib-devel
-
-##### SUB-PACKAGES #####
+BuildRequires:	doxygen 
+BuildRequires:	graphviz
+BuildRequires:	python
+BuildRequires:	libxslt-proc
+BuildRequires:	expat-devel
+BuildRequires:	zlib-devel
 
 %description
 Exiv2 is a command line utility to access image metadata:
@@ -45,13 +35,14 @@ Exiv2 is a command line utility to access image metadata:
       Exif metadata
     * fix the Exif ISO setting of picture taken with Nikon cameras
 
-%package -n %libname
+%package -n %{libname}
 Summary:	Library to access EXIF data in image files
 #Provides:	libexiv
 Group:		Graphics
-Obsoletes:  %{_lib}exiv22 < 0.16-1
+Obsoletes: 	%{_lib}exiv22 < 0.16-1
+Obsoletes:	%{mklibname exiv2_ 11} <= 0.22
  
-%description -n %libname
+%description -n %{libname}
 libexiv2 is a C++ library to access image metadata. libexiv2 is free
 software.
 
@@ -75,11 +66,11 @@ The Exiv2 library provides
     * complete API documentation (by Doxygen)
 
 %package -n %{libdev}
-Summary: 	Headers and links to compile against the "%{libname}" library
-Requires: 	%{libname} = %{version}
-Requires:       multiarch-utils
+Summary:	Headers and links to compile against the "%{libname}" library
+Requires:	%{libname} = %{version}
+Requires:	multiarch-utils
 Provides:	libexiv-devel = %{version}
-Obsoletes: %{_lib}exiv2_2-devel
+Obsoletes:	%{_lib}exiv2_2-devel
 Group:		Development/C
 
 %description -n %{libdev}
@@ -87,15 +78,13 @@ This package contains all files which one needs to compile programs using
 the "%{libname}" library.
 
 %package doc
-Summary: Exiv2 library documentation
-Group: Books/Computer books
-Conflicts: %{_lib}exiv2_2-devel
-BuildArch: noarch
+Summary:	Exiv2 library documentation
+Group:		Books/Computer books
+Conflicts:	%{_lib}exiv2_2-devel
+BuildArch:	noarch
 
 %description doc
 Exiv2 library documentation.
-
-##### PREP #####
 
 %prep
 %setup -q -n exiv2-%{version}
