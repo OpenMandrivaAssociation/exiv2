@@ -1,6 +1,6 @@
-%define major 12
-%define libname %mklibname exiv2_ %major
-%define libdev %mklibname exiv2 -d
+%define major	12
+%define libname %mklibname exiv2_ %{major}
+%define devname %mklibname exiv2 -d
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
@@ -9,14 +9,14 @@ Release:	24
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
-Source0:	http://www.exiv2.org/%name-%{version}.tar.gz
-#Provides:	libexiv
+Source0:	http://www.exiv2.org/%{name}-%{version}.tar.gz
+
 BuildRequires:	doxygen 
 BuildRequires:	graphviz
 BuildRequires:	python
-BuildRequires:	libxslt-proc
-BuildRequires:	expat-devel
-BuildRequires:	zlib-devel
+BuildRequires:	xsltproc
+BuildRequires:	pkgconfig(expat)
+BuildRequires:	pkgconfig(zlib)
 
 %description
 Exiv2 is a command line utility to access image metadata:
@@ -37,10 +37,7 @@ Exiv2 is a command line utility to access image metadata:
 
 %package -n %{libname}
 Summary:	Library to access EXIF data in image files
-#Provides:	libexiv
 Group:		Graphics
-Obsoletes: 	%{_lib}exiv22 < 0.16-1
-Obsoletes:	%{mklibname exiv2_ 11} <= 0.22
  
 %description -n %{libname}
 libexiv2 is a C++ library to access image metadata. libexiv2 is free
@@ -65,32 +62,31 @@ The Exiv2 library provides
       set from individual tags)
     * complete API documentation (by Doxygen)
 
-%package -n %{libdev}
+%package -n %{devname}
 Summary:	Headers and links to compile against the "%{libname}" library
-Requires:	%{libname} = %{version}
-Requires:	multiarch-utils
-Provides:	libexiv-devel = %{version}
-Obsoletes:	%{_lib}exiv2_2-devel
 Group:		Development/C
+Requires:	%{libname} = %{version}
+Provides:	%{name}-devel = %{version}
 
-%description -n %{libdev}
+%description -n %{devname}
 This package contains all files which one needs to compile programs using
 the "%{libname}" library.
 
 %package doc
 Summary:	Exiv2 library documentation
 Group:		Books/Computer books
-Conflicts:	%{_lib}exiv2_2-devel
 BuildArch:	noarch
 
 %description doc
 Exiv2 library documentation.
 
 %prep
-%setup -q -n exiv2-%{version}
+%setup -q
 
 %build
-%configure2_5x --enable-shared --disable-static
+%configure2_5x \
+	--enable-shared \
+	--disable-static
 %make
 %make update-po -C po
 %make doc
@@ -108,32 +104,14 @@ chmod 0755 %{buildroot}%{_libdir}/lib%{name}.so.%{major}*
 %{_bindir}/exiv2
 %{_mandir}/man1/*
 
-%files -n %libname
+%files -n %{libname}
 %{_libdir}/lib%{name}.so.%{major}*
 
-%files -n %{libdev}
+%files -n %{devname}
 %{_libdir}/lib%{name}.so
 %{_libdir}/pkgconfig/*
 %{_includedir}/*
 
 %files doc
 %doc doc/ChangeLog doc/cmd.txt doc/html doc/include doc/index.html
-
-
-%changelog
-
-* Sun Oct 09 2011 fwang <fwang> 0.22-1.mga2
-+ Revision: 153403
-- update libmajor
-- new version 0.22
-
-* Wed Apr 20 2011 pterjan <pterjan> 0.21.1-1.mga1
-+ Revision: 89207
-- Update to 0.21.1
-
-* Fri Jan 14 2011 mikala <mikala> 0.21-1.mga1
-+ Revision: 18068
-- Drop mdk macros
-- Remove BuildRoot
-- imported package exiv2
 
