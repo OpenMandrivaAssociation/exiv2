@@ -1,11 +1,11 @@
-%define major	12
+%define major	13
 %define libname %mklibname exiv2_ %{major}
 %define devname %mklibname exiv2 -d
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
-Version:	0.23
-Release:	34
+Version:	0.24
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
@@ -84,12 +84,11 @@ Exiv2 library documentation.
 %setup -q
 
 %build
-%configure2_5x \
-	--enable-shared \
-	--disable-static
+%configure \
+	--enable-shared
 %make
 %make update-po -C po
-%make doc
+%make doc -k ||:
 
 %install
 %makeinstall_std
