@@ -2,6 +2,8 @@
 %define libname %mklibname exiv2_ %{major}
 %define devname %mklibname exiv2 -d
 
+%define _disable_lto 1
+
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
 Version:	0.24
