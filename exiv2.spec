@@ -1,4 +1,4 @@
-%define major	13
+%define major 14
 %define libname %mklibname exiv2_ %{major}
 %define devname %mklibname exiv2 -d
 
