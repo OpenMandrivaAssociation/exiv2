@@ -19,6 +19,7 @@ BuildRequires:	python
 BuildRequires:	xsltproc
 BuildRequires:	pkgconfig(expat)
 BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(libcurl)
 
 %description
 Exiv2 is a command line utility to access image metadata:
