@@ -7,7 +7,7 @@
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
 Version:	0.25
-Release:	1
+Release:	2
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
@@ -87,7 +87,9 @@ Exiv2 library documentation.
 
 %build
 %configure \
-	--enable-shared
+	--enable-shared \
+	--enable-video \
+	--enable-webready
 %make
 %make update-po -C po
 %make doc -k ||:
