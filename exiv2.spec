@@ -1,4 +1,4 @@
-%define major 14
+%define major 26
 %define libname %mklibname exiv2_ %{major}
 %define devname %mklibname exiv2 -d
 
@@ -6,12 +6,12 @@
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
-Version:	0.25
-Release:	3
+Version:	0.26
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
-Source0:	http://www.exiv2.org/%{name}-%{version}.tar.gz
+Source0:	http://www.exiv2.org/builds/%{name}-%{version}-trunk.tar.gz
 
 BuildRequires:	doxygen 
 BuildRequires:	graphviz
@@ -85,7 +85,7 @@ BuildArch:	noarch
 Exiv2 library documentation.
 
 %prep
-%setup -q
+%setup -qn %{name}-trunk
 
 %build
 %configure \
