@@ -30,6 +30,7 @@ BuildRequires:	autoconf-archive
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
+BuildRequires:	gettext-devel
 
 %description
 Exiv2 is a command line utility to access image metadata:
