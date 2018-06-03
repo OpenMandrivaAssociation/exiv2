@@ -2,7 +2,11 @@
 %define libname %mklibname exiv2_ %{major}
 %define devname %mklibname exiv2 -d
 
-%define _disable_lto 1
+# FIXME -- error at link time with LTO enabled (clang 7.0-333395, binutils 2.30, exiv2 0.26):
+# /tmp/lto-llvm-8c3831.o:ld-temp.o:(anonymous namespace)::registry: error: undefined reference to 'Exiv2::newPngInstance(std::auto_ptr<Exiv2::BasicIo>, bool)'
+# /tmp/lto-llvm-8c3831.o:ld-temp.o:(anonymous namespace)::registry: error: undefined reference to 'Exiv2::isPngType(Exiv2::BasicIo&, bool)'
+
+#define _disable_lto 1
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
@@ -12,6 +16,7 @@ License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
 Source0:	http://www.exiv2.org/builds/%{name}-%{version}-trunk.tar.gz
+Patch0:		exiv2-0.26-buildsystem-fixes.patch
 
 BuildRequires:	doxygen 
 BuildRequires:	graphviz
@@ -21,6 +26,10 @@ BuildRequires:	pkgconfig(expat)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libssh)
+BuildRequires:	autoconf-archive
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool
 
 %description
 Exiv2 is a command line utility to access image metadata:
@@ -85,7 +94,12 @@ BuildArch:	noarch
 Exiv2 library documentation.
 
 %prep
-%setup -qn %{name}-trunk
+%autosetup -p1 -n %{name}-trunk
+cd config
+cp -f %{_datadir}/libtool/config/* .
+aclocal
+autoconf
+cp -f configure ..
 
 %build
 %configure \
@@ -97,7 +111,7 @@ Exiv2 library documentation.
 %make doc -k ||:
 
 %install
-%makeinstall_std
+%makeinstall_std MKINSTALLDIRS=%{_datadir}/automake-*/mkinstalldirs
 
 %find_lang exiv2
 
