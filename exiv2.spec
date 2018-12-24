@@ -1,22 +1,16 @@
-%define major 26
+%define major 27
 %define libname %mklibname exiv2_ %{major}
 %define devname %mklibname exiv2 -d
 
-# FIXME -- error at link time with LTO enabled (clang 7.0-333395, binutils 2.30, exiv2 0.26):
-# /tmp/lto-llvm-8c3831.o:ld-temp.o:(anonymous namespace)::registry: error: undefined reference to 'Exiv2::newPngInstance(std::auto_ptr<Exiv2::BasicIo>, bool)'
-# /tmp/lto-llvm-8c3831.o:ld-temp.o:(anonymous namespace)::registry: error: undefined reference to 'Exiv2::isPngType(Exiv2::BasicIo&, bool)'
-
-#define _disable_lto 1
-
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
-Version:	0.26
-Release:	4
+Version:	0.27.0
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
-Source0:	http://www.exiv2.org/builds/%{name}-%{version}-trunk.tar.gz
-Patch0:		exiv2-0.26-buildsystem-fixes.patch
+Source0:	http://www.exiv2.org/builds/%{name}-%{version}-Source.tar.gz
+Patch0:		exiv2-0.27.0-curl-compile.patch
 
 BuildRequires:	doxygen 
 BuildRequires:	graphviz
@@ -26,11 +20,8 @@ BuildRequires:	pkgconfig(expat)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libssh)
-BuildRequires:	autoconf-archive
-BuildRequires:	autoconf
-BuildRequires:	automake
-BuildRequires:	libtool
 BuildRequires:	gettext-devel
+BuildRequires:	cmake ninja
 
 %description
 Exiv2 is a command line utility to access image metadata:
@@ -96,43 +87,71 @@ BuildArch:	noarch
 Exiv2 library documentation.
 
 %prep
-%autosetup -p1 -n %{name}-trunk
-cd config
-cp -f %{_datadir}/libtool/config/* .
-aclocal
-autoconf
-cp -f configure ..
+%autosetup -p1 -n %{name}-%{version}-Source
 
 %build
-%configure \
-	--enable-shared \
-	--enable-video \
-	--enable-webready
-%make
-%make update-po -C po
-%make doc -k ||:
+%cmake \
+	-DEXIV2_BUILD_DOC:BOOL=ON \
+	-DEXIV2_BUILD_PO:BOOL=ON \
+	-DEXIV2_ENABLE_CURL:BOOL=ON \
+	-DEXIV2_ENABLE_SSH:BOOL=ON \
+	-DEXIV2_ENABLE_VIDEO:BOOL=ON \
+	-DEXIV2_ENABLE_WEBREADY:BOOL=ON \
+	-DEXIV2_ENABLE_XMP:BOOL=ON \
+	-G Ninja
+%ninja_build
+%ninja_build doc
 
 %install
-%makeinstall_std MKINSTALLDIRS=%{_datadir}/automake-*/mkinstalldirs
-
-%find_lang exiv2
+%ninja_install -C build
 
 # to avoid unstripped-binary-or-object
 chmod 0755 %{buildroot}%{_libdir}/lib%{name}.so.%{major}*
 
-%files  -f %{name}.lang
-%doc COPYING README
+# No need to package tests
+rm -f \
+	%{buildroot}%{_bindir}/*-test \
+	%{buildroot}%{_mandir}/man1/*-test.1*
+
+# And no need to package the static XMP lib that's linked into
+# libexiv2
+rm -f \
+	%{buildroot}%{_libdir}/libxmp.a
+
+%find_lang %{name}
+
+%files -f %{name}.lang
 %{_bindir}/exiv2
+%{_bindir}/addmoddel
+%{_bindir}/exifcomment
+%{_bindir}/exifdata
+%{_bindir}/exifprint
+%{_bindir}/exifvalue
+%{_bindir}/exiv2json
+%{_bindir}/geotag
+%{_bindir}/iotest
+%{_bindir}/iptceasy
+%{_bindir}/iptcprint
+%{_bindir}/iptctest
+%{_bindir}/metacopy
+%{_bindir}/mrwthumb
+%{_bindir}/prevtest
+%{_bindir}/taglist
+%{_bindir}/xmpdump
+%{_bindir}/xmpparse
+%{_bindir}/xmpprint
+%{_bindir}/xmpsample
 %{_mandir}/man1/*
 
 %files -n %{libname}
 %{_libdir}/lib%{name}.so.%{major}*
+%{_libdir}/lib%{name}.so.0*
 
 %files -n %{devname}
 %{_libdir}/lib%{name}.so
 %{_libdir}/pkgconfig/*
+%{_datadir}/exiv2/cmake
 %{_includedir}/*
 
 %files doc
-%doc doc/ChangeLog doc/cmd.txt doc/html doc/include doc/index.html
-
+%doc %{_docdir}/libexiv2
