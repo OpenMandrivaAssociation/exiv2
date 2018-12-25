@@ -5,7 +5,7 @@
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
 Version:	0.27.0
-Release:	1
+Release:	2
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
@@ -88,6 +88,12 @@ Exiv2 library documentation.
 
 %prep
 %autosetup -p1 -n %{name}-%{version}-Source
+# Looks like upstream builds its source tarballs on inherently
+# broken OSes that store permissions incorrectly...
+find . -name "._*" |xargs rm
+# And bundling pycache files for an older python version
+# is a bad idea...
+find . -name __pycache__ |xargs rm -r
 
 %build
 %cmake \
