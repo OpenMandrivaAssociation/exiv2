@@ -5,7 +5,7 @@
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
 Version:	0.27.0
-Release:	2
+Release:	3
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
@@ -72,6 +72,7 @@ Summary:	Headers and links to compile against the "%{libname}" library
 Group:		Development/C
 Requires:	%{libname} = %{version}
 Requires:	pkgconfig(libcurl)
+Requires:	pkgconfig(libssh)
 Provides:	%{name}-devel = %{version}
 
 %description -n %{devname}
