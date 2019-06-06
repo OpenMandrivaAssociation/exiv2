@@ -4,13 +4,12 @@
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
-Version:	0.27.0
-Release:	3
+Version:	0.27.1
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
 Source0:	http://www.exiv2.org/builds/%{name}-%{version}-Source.tar.gz
-Patch0:		exiv2-0.27.0-curl-compile.patch
 
 BuildRequires:	doxygen 
 BuildRequires:	graphviz
@@ -89,12 +88,6 @@ Exiv2 library documentation.
 
 %prep
 %autosetup -p1 -n %{name}-%{version}-Source
-# Looks like upstream builds its source tarballs on inherently
-# broken OSes that store permissions incorrectly...
-find . -name "._*" |xargs rm
-# And bundling pycache files for an older python version
-# is a bad idea...
-find . -name __pycache__ |xargs rm -r
 
 %build
 %cmake \
@@ -123,7 +116,7 @@ rm -f \
 # And no need to package the static XMP lib that's linked into
 # libexiv2
 rm -f \
-	%{buildroot}%{_libdir}/libxmp.a
+	%{buildroot}%{_libdir}/libexiv2-xmp.a
 
 %find_lang %{name}
 
@@ -157,8 +150,8 @@ rm -f \
 %files -n %{devname}
 %{_libdir}/lib%{name}.so
 %{_libdir}/pkgconfig/*
-%{_datadir}/exiv2/cmake
 %{_includedir}/*
+%{_libdir}/exiv2/cmake
 
 %files doc
-%doc %{_docdir}/libexiv2
+%doc %{_docdir}/exiv2
