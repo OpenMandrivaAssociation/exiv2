@@ -4,7 +4,7 @@
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
-Version:	0.27.1
+Version:	0.27.2
 Release:	1
 License:	GPLv2+
 Group:		Graphics
@@ -118,9 +118,10 @@ rm -f \
 rm -f \
 	%{buildroot}%{_libdir}/libexiv2-xmp.a
 
-%find_lang %{name}
+#find_lang %{name}
 
-%files -f %{name}.lang
+%files
+# -f %{name}.lang
 %{_bindir}/exiv2
 %{_bindir}/addmoddel
 %{_bindir}/exifcomment
@@ -151,7 +152,7 @@ rm -f \
 %{_libdir}/lib%{name}.so
 %{_libdir}/pkgconfig/*
 %{_includedir}/*
-%{_libdir}/exiv2/cmake
+%{_libdir}/cmake/exiv2
 
 %files doc
 %doc %{_docdir}/exiv2
