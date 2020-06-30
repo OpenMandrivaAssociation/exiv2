@@ -4,8 +4,8 @@
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
-Version:	0.27.2
-Release:	2
+Version:	0.27.3
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
@@ -131,13 +131,10 @@ rm -f \
 %{_bindir}/exifvalue
 %{_bindir}/exiv2json
 %{_bindir}/geotag
-%{_bindir}/iotest
 %{_bindir}/iptceasy
 %{_bindir}/iptcprint
-%{_bindir}/iptctest
 %{_bindir}/metacopy
 %{_bindir}/mrwthumb
-%{_bindir}/prevtest
 %{_bindir}/taglist
 %{_bindir}/xmpdump
 %{_bindir}/xmpparse
