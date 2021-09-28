@@ -1,3 +1,5 @@
+%define _disable_lto 1
+
 %define major 27
 %define libname %mklibname exiv2_ %{major}
 %define devname %mklibname exiv2 -d
