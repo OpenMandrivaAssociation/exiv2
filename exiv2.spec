@@ -9,7 +9,8 @@ Release:	2
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
-Source0:	http://www.exiv2.org/builds/%{name}-%{version}-Source.tar.gz
+#Source0:	http://www.exiv2.org/builds/%{name}-%{version}-Source.tar.gz
+Source0:	https://github.com/Exiv2/exiv2/archive/refs/tags/v%{version}-RC2/%{name}-%{version}-RC2.tar.gz
 Patch0:		exiv2-no-static-xmp.patch
 
 BuildRequires:	doxygen 
@@ -87,7 +88,7 @@ BuildArch:	noarch
 Exiv2 library documentation.
 
 %prep
-%autosetup -p1 -n %{name}-%{version}-Source
+%autosetup -p1 -n %{name}-%{version}-RC2
 
 %build
 # EXIV2_ENABLE_SSH is deprecated and requires the old unsave libssh v1
