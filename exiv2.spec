@@ -93,6 +93,8 @@ Exiv2 library documentation.
 %autosetup -p1 -n %{name}-%{version}-RC2
 
 %build
+export CC=gcc
+export CXX=g++
 # EXIV2_ENABLE_SSH is deprecated and requires the old unsave libssh v1
 %cmake \
 	-DEXIV2_BUILD_DOC:BOOL=ON \
