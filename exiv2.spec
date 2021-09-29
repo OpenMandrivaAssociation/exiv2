@@ -93,6 +93,8 @@ Exiv2 library documentation.
 %autosetup -p1 -n %{name}-%{version}-RC2
 
 %build
+# for now use GCC, because clang 13 crashing at compiling time:
+# https://file-store.openmandriva.org/api/v1/file_stores/1fbdf1a6ae4050d454179d97333461c16d6e50b1.log?show=true
 export CC=gcc
 export CXX=g++
 # EXIV2_ENABLE_SSH is deprecated and requires the old unsave libssh v1
