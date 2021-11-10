@@ -7,12 +7,12 @@
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
 Version:	0.27.5
-Release:	0.rc2.0
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
 #Source0:	http://www.exiv2.org/builds/%{name}-%{version}-Source.tar.gz
-Source0:	https://github.com/Exiv2/exiv2/archive/refs/tags/v%{version}-RC2/%{name}-%{version}-RC2.tar.gz
+Source0:	https://github.com/Exiv2/exiv2/archive/refs/tags/v%{version}-RC2/%{name}-%{version}.tar.gz
 Patch0:		exiv2-no-static-xmp.patch
 
 BuildRequires:	doxygen 
@@ -90,13 +90,13 @@ BuildArch:	noarch
 Exiv2 library documentation.
 
 %prep
-%autosetup -p1 -n %{name}-%{version}-RC2
+%autosetup -p1 -n %{name}-%{version}
 
 %build
 # for now use GCC, because clang 13 crashing at compiling time:
 # https://file-store.openmandriva.org/api/v1/file_stores/1fbdf1a6ae4050d454179d97333461c16d6e50b1.log?show=true
-export CC=gcc
-export CXX=g++
+#export CC=gcc
+#export CXX=g++
 # EXIV2_ENABLE_SSH is deprecated and requires the old unsave libssh v1
 %cmake \
 	-DEXIV2_BUILD_DOC:BOOL=ON \
@@ -106,6 +106,7 @@ export CXX=g++
 	-DEXIV2_ENABLE_VIDEO:BOOL=ON \
 	-DEXIV2_ENABLE_WEBREADY:BOOL=ON \
 	-DEXIV2_ENABLE_XMP:BOOL=ON \
+        -DEXIV2_ENABLE_BMFF=ON \
 	-G Ninja
 %ninja_build
 %ninja_build doc
