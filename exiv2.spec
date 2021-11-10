@@ -106,6 +106,7 @@ Exiv2 library documentation.
 	-DEXIV2_ENABLE_VIDEO:BOOL=ON \
 	-DEXIV2_ENABLE_WEBREADY:BOOL=ON \
 	-DEXIV2_ENABLE_XMP:BOOL=ON \
+        -DEXIV2_ENABLE_BMFF=ON \
 	-G Ninja
 %ninja_build
 %ninja_build doc
