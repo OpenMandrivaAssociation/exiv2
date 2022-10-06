@@ -22,6 +22,7 @@ BuildRequires:	xsltproc
 BuildRequires:	pkgconfig(expat)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libcurl)
+BuildRequires:	pkgconfig(openssl)
 BuildRequires:	gettext-devel
 BuildRequires:	cmake ninja
 
