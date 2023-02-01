@@ -6,13 +6,13 @@
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
-Version:	0.27.5
-Release:	3
+Version:	0.27.6
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
 #Source0:	http://www.exiv2.org/builds/%{name}-%{version}-Source.tar.gz
-Source0:	https://github.com/Exiv2/exiv2/archive/refs/tags/v%{version}-RC2/%{name}-%{version}.tar.gz
+Source0:	https://github.com/Exiv2/exiv2/archive/refs/tags/v%{version}/%{name}-%{version}.tar.gz
 Patch0:		exiv2-no-static-xmp.patch
 
 BuildRequires:	doxygen 
@@ -94,14 +94,10 @@ Exiv2 library documentation.
 %autosetup -p1 -n %{name}-%{version}
 
 %build
-# for now use GCC, because clang 13 crashing at compiling time:
-# https://file-store.openmandriva.org/api/v1/file_stores/1fbdf1a6ae4050d454179d97333461c16d6e50b1.log?show=true
-#export CC=gcc
-#export CXX=g++
 # EXIV2_ENABLE_SSH is deprecated and requires the old unsave libssh v1
 %cmake \
 	-DEXIV2_BUILD_DOC:BOOL=ON \
-	-DEXIV2_BUILD_PO:BOOL=ON \
+	-DEXIV2_ENABLE_NLS:BOOL=ON \
 	-DEXIV2_ENABLE_CURL:BOOL=ON \
 	-DEXIV2_ENABLE_SSH:BOOL=OFF \
 	-DEXIV2_ENABLE_VIDEO:BOOL=ON \
@@ -128,10 +124,9 @@ rm -f \
 rm -f \
 	%{buildroot}%{_libdir}/libexiv2-xmp.a
 
-#find_lang %{name}
+%find_lang %{name}
 
-%files
-# -f %{name}.lang
+%files -f %{name}.lang
 %{_bindir}/exiv2
 %{_bindir}/addmoddel
 %{_bindir}/exifcomment
