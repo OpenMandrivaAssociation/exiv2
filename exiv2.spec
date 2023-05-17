@@ -1,13 +1,13 @@
 %define _disable_lto 1
 
-%define major 27
-%define libname %mklibname exiv2_ %{major}
+%define major %(echo %{version} |cut -d. -f2)
+%define libname %mklibname exiv2
 %define devname %mklibname exiv2 -d
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
-Version:	0.27.6
-Release:	3
+Version:	0.28.0
+Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
@@ -23,6 +23,8 @@ BuildRequires:	pkgconfig(expat)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(openssl)
+BUildRequires:	pkgconfig(inih)
+BUildRequires:	pkgconfig(INIReader)
 BuildRequires:	gettext-devel
 BuildRequires:	cmake ninja
 
@@ -92,9 +94,7 @@ Exiv2 library documentation.
 
 %prep
 %autosetup -p1 -n %{name}-%{version}
-
-%build
-# EXIV2_ENABLE_SSH is deprecated and requires the old unsave libssh v1
+# EXIV2_ENABLE_SSH is deprecated and requires the old unsafe libssh v1
 %cmake \
 	-DEXIV2_BUILD_DOC:BOOL=ON \
 	-DEXIV2_ENABLE_NLS:BOOL=ON \
@@ -103,10 +103,13 @@ Exiv2 library documentation.
 	-DEXIV2_ENABLE_VIDEO:BOOL=ON \
 	-DEXIV2_ENABLE_WEBREADY:BOOL=ON \
 	-DEXIV2_ENABLE_XMP:BOOL=ON \
-        -DEXIV2_ENABLE_BMFF=ON \
+        -DEXIV2_ENABLE_BMFF:BOOL=ON \
+	-DEXIV2_BUILD_SAMPLES:BOOL=ON \
 	-G Ninja
-%ninja_build
-%ninja_build doc
+
+%build
+%ninja_build -C build
+%ninja_build -C build doc
 
 %install
 %ninja_install -C build
@@ -133,7 +136,6 @@ rm -f \
 %{_bindir}/exifdata
 %{_bindir}/exifprint
 %{_bindir}/exifvalue
-%{_bindir}/exiv2json
 %{_bindir}/geotag
 %{_bindir}/iptceasy
 %{_bindir}/iptcprint
