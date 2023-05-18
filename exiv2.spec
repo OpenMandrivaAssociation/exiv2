@@ -23,8 +23,9 @@ BuildRequires:	pkgconfig(expat)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(openssl)
-BUildRequires:	pkgconfig(inih)
-BUildRequires:	pkgconfig(INIReader)
+BuildRequires:	pkgconfig(inih)
+BuildRequires:	pkgconfig(INIReader)
+BuildRequires:	pkgconfig(libbrotlidec)
 BuildRequires:	gettext-devel
 BuildRequires:	cmake ninja
 
