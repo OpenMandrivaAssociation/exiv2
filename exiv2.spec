@@ -6,14 +6,13 @@
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
-Version:	0.28.0
+Version:	0.28.1
 Release:	1
 License:	GPLv2+
 Group:		Graphics
 Url:		http://www.exiv2.org/
 #Source0:	http://www.exiv2.org/builds/%{name}-%{version}-Source.tar.gz
 Source0:	https://github.com/Exiv2/exiv2/archive/refs/tags/v%{version}/%{name}-%{version}.tar.gz
-Patch0:		exiv2-no-static-xmp.patch
 
 BuildRequires:	doxygen 
 BuildRequires:	graphviz
@@ -157,7 +156,7 @@ rm -f \
 %{_libdir}/lib%{name}.so
 %{_libdir}/pkgconfig/*
 %{_includedir}/*
-%{_libdir}/cmake/exiv2
+%{_datadir}/cmake/exiv2
 
 %files doc
 %doc %{_docdir}/exiv2
