@@ -155,8 +155,8 @@ rm -f \
 %files -n %{devname}
 %{_libdir}/lib%{name}.so
 %{_libdir}/pkgconfig/*
+%{_libdir}/cmake/exiv2/
 %{_includedir}/*
-#{_datadir}/cmake/exiv2
 
 %files doc
 %doc %{_docdir}/exiv2
