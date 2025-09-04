@@ -4,6 +4,8 @@
 %define libname %mklibname exiv2
 %define devname %mklibname exiv2 -d
 
+%define __requires_exclude .*XmpSdk.*
+
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
 Version:	0.28.7
