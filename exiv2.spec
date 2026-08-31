@@ -2,7 +2,9 @@
 %define libname %mklibname exiv2
 %define devname %mklibname exiv2 -d
 
-%define __requires_exclude .*XmpSdk.*
+# inih only Provides pkgconfig(inih), not cmake(inih); the cmake
+# config still emits that require and extra-tests cannot install -devel.
+%define __requires_exclude .*XmpSdk.*|cmake\\(inih\\)
 # ABF treats rpmlint "Package check failed" as a test failure.
 %define _build_pkgcheck_set %{nil}
 %define _build_pkgcheck_srpm %{nil}
