@@ -1,2 +1,7 @@
 addFilter("E: zero-length")
-
+addFilter("E: unused-rpmlintrc-filter")
+addFilter("E: no-library-dependency-for")
+addFilter("E: no-dependency-on locales-doc")
+addFilter("E: incorrect-fsf-address")
+addFilter("W: invalid-license")
+addFilter("W: no-manual-page-for-binary")
