@@ -36,7 +36,10 @@ BuildRequires:	pkgconfig(inih)
 BuildRequires:	pkgconfig(INIReader)
 BuildRequires:	pkgconfig(libbrotlidec)
 BuildRequires:	gettext-devel
-BuildRequires:	cmake(GTest)
+# cmake(GTest) is also provided by cmake itself (FindGTest.cmake),
+# so that BR does not pull the real library on ABF.
+BuildRequires:	pkgconfig(gtest)
+BuildRequires:	pkgconfig(gmock)
 
 %description
 Exiv2 is a command line utility to access image metadata:
