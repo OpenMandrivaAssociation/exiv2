@@ -1,3 +1,4 @@
+# Used by local abb builds. ABF mock only sees this if it is a Source.
 addFilter("no-library-dependency-for")
 addFilter("no-dependency-on locales-doc")
 addFilter("incorrect-fsf-address")
