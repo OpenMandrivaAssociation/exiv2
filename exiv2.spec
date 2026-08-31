@@ -13,6 +13,7 @@ Group:		Graphics
 Url:		https://www.exiv2.org/
 #Source0:	http://www.exiv2.org/builds/%{name}-%{version}-Source.tar.gz
 Source0:	https://github.com/Exiv2/exiv2/archive/refs/tags/v%{version}/%{name}-%{version}.tar.gz
+Source1:	%{name}.rpmlintrc
 
 BuildSystem:	cmake
 BuildOption:	-DEXIV2_BUILD_DOC:BOOL=ON
