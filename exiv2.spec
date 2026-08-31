@@ -8,7 +8,7 @@
 
 Summary:	Command line tool to access EXIF data in image files
 Name:		exiv2
-Version:	0.28.8
+Version:	0.28.9
 Release:	1
 License:	GPLv2+
 Group:		Graphics
@@ -16,19 +16,29 @@ Url:		https://www.exiv2.org/
 #Source0:	http://www.exiv2.org/builds/%{name}-%{version}-Source.tar.gz
 Source0:	https://github.com/Exiv2/exiv2/archive/refs/tags/v%{version}/%{name}-%{version}.tar.gz
 
-BuildRequires:	doxygen 
+BuildSystem:	cmake
+BuildOption:	-DEXIV2_BUILD_DOC:BOOL=ON
+BuildOption:	-DEXIV2_ENABLE_NLS:BOOL=ON
+BuildOption:	-DEXIV2_ENABLE_CURL:BOOL=ON
+BuildOption:	-DEXIV2_ENABLE_VIDEO:BOOL=ON
+BuildOption:	-DEXIV2_ENABLE_WEBREADY:BOOL=ON
+BuildOption:	-DEXIV2_ENABLE_XMP:BOOL=ON
+BuildOption:	-DEXIV2_ENABLE_BMFF:BOOL=ON
+BuildOption:	-DEXIV2_BUILD_SAMPLES:BOOL=ON
+BuildOption:	-DEXIV2_BUILD_UNIT_TESTS:BOOL=ON
+
+BuildRequires:	doxygen
 BuildRequires:	graphviz
 BuildRequires:	python
-BuildRequires:	xsltproc
+BuildRequires:	python%{pyver}dist(lxml)
 BuildRequires:	pkgconfig(expat)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libcurl)
-BuildRequires:	pkgconfig(openssl)
 BuildRequires:	pkgconfig(inih)
 BuildRequires:	pkgconfig(INIReader)
 BuildRequires:	pkgconfig(libbrotlidec)
 BuildRequires:	gettext-devel
-BuildRequires:	cmake ninja
+BuildRequires:	cmake(GTest)
 
 %description
 Exiv2 is a command line utility to access image metadata:
@@ -77,10 +87,9 @@ The Exiv2 library provides
 %package -n %{devname}
 Summary:	Headers and links to compile against the "%{libname}" library
 Group:		Development/C
-Requires:	%{libname} = %{version}
+Requires:	%{libname} = %{EVRD}
 Requires:	pkgconfig(libcurl)
-Requires:	pkgconfig(libssh)
-Provides:	%{name}-devel = %{version}
+Provides:	%{name}-devel = %{EVRD}
 
 %description -n %{devname}
 This package contains all files which one needs to compile programs using
@@ -94,28 +103,42 @@ BuildArch:	noarch
 %description doc
 Exiv2 library documentation.
 
-%prep
-%autosetup -p1 -n %{name}-%{version}
-# EXIV2_ENABLE_SSH is deprecated and requires the old unsafe libssh v1
-%cmake \
-	-DEXIV2_BUILD_DOC:BOOL=ON \
-	-DEXIV2_ENABLE_NLS:BOOL=ON \
-	-DEXIV2_ENABLE_CURL:BOOL=ON \
-	-DEXIV2_ENABLE_SSH:BOOL=OFF \
-	-DEXIV2_ENABLE_VIDEO:BOOL=ON \
-	-DEXIV2_ENABLE_WEBREADY:BOOL=ON \
-	-DEXIV2_ENABLE_XMP:BOOL=ON \
-        -DEXIV2_ENABLE_BMFF:BOOL=ON \
-	-DEXIV2_BUILD_SAMPLES:BOOL=ON \
-	-G Ninja
+# Doxygen only needs to run once, after the (PGO) optimized compile.
+%install -p
+cmake --build _OMV_rpm_build --target doc
 
-%build
-%ninja_build -C build
-%ninja_build -C build doc
+# Parser-heavy C++ with large tag tables and format dispatch: PGO can
+# improve inlining and branch layout on the JPEG/TIFF/RAW/XMP hot paths
+# used by gwenview, darktable, gexiv2 and similar consumers.
+%pgo
+set +e
+export LLVM_PROFILE_FILE="%{_pgo_profile_dir}/exiv2-%%m-%%p.profraw"
+_b=_OMV_rpm_build
+export EXIV2_BINDIR="$PWD/$_b/bin"
+export LD_LIBRARY_PATH="$PWD/$_b/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+if [ ! -x "$EXIV2_BINDIR/exiv2" ]; then
+	echo "PGO: instrumented exiv2 binary missing"
+	exit 1
+fi
+if [ -x "$EXIV2_BINDIR/unit_tests" ]; then
+	"$EXIV2_BINDIR/unit_tests"
+fi
+# Upstream system/regression suite: CLI on bundled JPEG/TIFF/RAW/PNG/HEIF/video
+( cd tests && python runner.py )
+# Extra print paths on a slice of the test corpus (malformed files are expected)
+find test/data -type f ! -name '*.out' ! -name '*.txt' ! -name 'COPYRIGHT' \
+	! -path '*/test_reference_files/*' | head -200 | while read -r f; do
+	"$EXIV2_BINDIR/exiv2" -pt "$f"
+	"$EXIV2_BINDIR/exiv2" -pa "$f"
+	"$EXIV2_BINDIR/exiv2" pr "$f"
+done
+true
 
-%install
-%ninja_install -C build
+%check
+export LD_LIBRARY_PATH="$PWD/_OMV_rpm_build/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+_OMV_rpm_build/bin/unit_tests
 
+%install -a
 # to avoid unstripped-binary-or-object
 chmod 0755 %{buildroot}%{_libdir}/lib%{name}.so.%{major}*
 
@@ -128,8 +151,6 @@ rm -f \
 # libexiv2
 rm -f \
 	%{buildroot}%{_libdir}/libexiv2-xmp.a
-
-%find_lang %{name}
 
 %files -f %{name}.lang
 %{_bindir}/exiv2
