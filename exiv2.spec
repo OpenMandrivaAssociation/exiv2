@@ -1,5 +1,3 @@
-%define _disable_lto 1
-
 %define major %(echo %{version} |cut -d. -f2)
 %define libname %mklibname exiv2
 %define devname %mklibname exiv2 -d
